@@ -8,6 +8,8 @@ This project provides a powerful and user-friendly interface for working with au
 
 ---
 
+🎥 [view video demo here!](https://drive.google.com/file/d/1xsaC5cDz5xZDgsqOyhG05VY2iLs7J8eH/view?fbclid=IwY2xjawKg1XlleHRuA2FlbQIxMQABHnpmV816WFM6p7Ib_WapTpkA0vIGzZJGEXLme5nVLfmOzQFWwmSlYrj5uHn8_aem_6cXpSnGNmoCz9LfEqthygQ)
+
 ## 🚀 Features
 
 - Visualize and manipulate automata and graphs
