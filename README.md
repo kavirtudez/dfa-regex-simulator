@@ -21,7 +21,6 @@ This project provides a powerful and user-friendly interface for working with au
    ```bash
    git clone https://github.com/yourusername/automata_system.git
    cd automata_system
-```
    
 2. **Install dependencies:**
    ```bash
