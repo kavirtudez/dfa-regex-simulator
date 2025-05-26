@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Automata Visualizer</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Automata Visualizer</h1>
+
+      <div class="input-section">
+        <div class="input-row">
+          <div class="input-group">
+            <label for="regex-select">Choose Regular Expression:</label>
+            <select id="regex-select" class="regex-select">
+              <option value="" disabled selected>-- Select --</option>
+              <option
+                value="preset1"
+                data-formatted="(1+0)* (11+00+101+010) (11+00)* (11+00+0+1) (1+0+11) (11+00)* (101+000+111) (1+0)* (101+000+111+001+100) (11+00+1+0)*"
+              >
+                Regex 1 (Binary)
+              </option>
+              <option
+                value="preset2"
+                data-formatted="(a+b)* (aa+bb) (aa+bb)* (ab+ba+aba) (bab+aba+bbb) (a+b+bb+aa)* (bb+aa+aba) (aaa+bab+bba) (aaa+bab+bba)*"
+              >
+                Regex 2 (Alphabet)
+              </option>
+              <option value="custom">Custom Regex</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label>Choose Diagram:</label>
+            <div class="diagram-buttons">
+              <button class="diagram-btn active" data-type="dfa">DFA</button>
+              <button class="diagram-btn" data-type="cfg">CFG</button>
+              <button class="diagram-btn" data-type="pda">PDA</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="regex-input">Regular Expression:</label>
+          <input
+            type="text"
+            id="regex-input"
+            placeholder="Enter regular expression"
+            readonly
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="input-string">Input String:</label>
+          <input
+            type="text"
+            id="input-string"
+            placeholder="Enter string to simulate"
+          />
+        </div>
+
+        <button id="simulate-btn">Simulate</button>
+      </div>
+
+      <div id="dfa-section">
+        <img id="dfa-img" alt="DFA Diagram" class="diagram-img" />
+      </div>
+
+      <!-- Fullscreen Diagram View -->
+      <div id="fullscreen-view" class="fullscreen-view">
+        <div class="fullscreen-content">
+          <button class="close-fullscreen">&times;</button>
+          <img id="fullscreen-img" alt="Fullscreen Diagram" />
+        </div>
+      </div>
+
+      <div class="animation-controls">
+        <button id="play-pause-btn" onclick="togglePlayPause()">Pause</button>
+        <button onclick="changeSpeed(2000)">Slow</button>
+        <button onclick="changeSpeed(1000)">Normal</button>
+        <button onclick="changeSpeed(500)">Fast</button>
+      </div>
+
+      <div id="results-section">
+        <div class="result-header">
+          <h2>Simulation Results</h2>
+          <div id="acceptance-status"></div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-box">
+            <h3>DFA Information</h3>
+            <ul id="dfa-stats" class="stats-list"></ul>
+          </div>
+
+          <div class="stat-box">
+            <h3>Simulation Path</h3>
+            <div id="path-display" class="path-display"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="error-message" class="error-message"></div>
+    </div>
+
+    <!-- Alert Dialog -->
+    <div id="alert-dialog" class="alert-dialog">
+      <div class="alert-content">
+        <div class="alert-header">
+          <h3 id="alert-title">Alert</h3>
+          <button class="close-alert">&times;</button>
+        </div>
+        <div id="alert-message" class="alert-message"></div>
+        <div class="alert-footer">
+          <button id="alert-ok" class="alert-button">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Popup container -->
+    <div id="popup" class="popup">
+      <div class="popup-content">
+        <span class="close-popup">&times;</span>
+        <div id="popup-content"></div>
+      </div>
+    </div>
+
+    <!-- Confirmation Dialog -->
+    <div id="confirmation-dialog" class="alert-dialog">
+      <div class="alert-content">
+        <div class="alert-header">
+          <h3 id="confirmation-title">Confirm Change</h3>
+          <button class="close-alert">&times;</button>
+        </div>
+        <div id="confirmation-message" class="alert-message"></div>
+        <div class="alert-footer">
+          <button id="confirmation-cancel" class="alert-button secondary">
+            Cancel
+          </button>
+          <button id="confirmation-confirm" class="alert-button">
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Popup -->
+    <div id="loading-popup" class="loading-popup">
+      <div class="loading-content">
+        <div class="loading-spinner"></div>
+        <div class="loading-message">Simulating Automaton</div>
+        <div class="loading-submessage">
+          Please wait while we process your input...
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Pass presets from Flask to JavaScript
+      window.presets = {
+        preset1:
+          "(1|0)*(11|00|101|010)(11|00)*(11|00|0|1)(1|0|11)(11|00)*(101|000|111)(1|0)*(101|000|111|001|100)(11|00|1|0)*",
+        preset2:
+          "(a|b)*(aa|bb)(aa|bb)*(ab|ba|aba)(bab|aba|bbb)(a|b|bb|aa)*(bb|aa|aba)(aaa|bab|bba)(aaa|bab|bba)*",
+      };
+
+      // Popup handling
+      function showPopup(type) {
+        const popup = document.getElementById("popup");
+        const popupContent = document.getElementById("popup-content");
+
+        // Here you can add logic to show different content based on type
+        // For now, just showing a placeholder
+        popupContent.innerHTML = `<h2>${type.toUpperCase()} Content</h2>`;
+        popup.style.display = "block";
+      }
+
+      // Close popup when clicking the X
+      document.querySelector(".close-popup").onclick = function () {
+        document.getElementById("popup").style.display = "none";
+      };
+
+      // Close popup when clicking outside
+      window.onclick = function (event) {
+        const popup = document.getElementById("popup");
+        if (event.target == popup) {
+          popup.style.display = "none";
+        }
+      };
+    </script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DFA Simulator</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>DFA Simulator</h1>
+
+      <div class="input-section">
+        <div class="input-group">
+          <label>Choose a Regular Expression:</label>
+          <div id="regex-options" class="regex-btn-group">
+            <button type="button" class="regex-btn" data-choice="preset1">
+              Preset 1 (binary)
+            </button>
+            <button type="button" class="regex-btn" data-choice="preset2">
+              Preset 2 (alphabet)
+            </button>
+            <button type="button" class="regex-btn active" data-choice="custom">
+              Input your own
+            </button>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="regex">Regular Expression:</label>
+          <input type="text" id="regex" placeholder="Enter regex pattern" />
+        </div>
+
+        <div class="input-group">
+          <label for="input-string">Input String:</label>
+          <input
+            type="text"
+            id="input-string"
+            placeholder="Enter test string"
+          />
+        </div>
+
+        <button id="simulate-btn">Simulate</button>
+      </div>
+
+      <div id="initial-dfa-section" style="display: none; margin-bottom: 2rem">
+        <h3>Initial DFA Diagram</h3>
+        <img id="initial-dfa-img" alt="Initial DFA" />
+      </div>
+
+      <div class="results-section" style="display: none">
+        <div class="result-header">
+          <h2>
+            Simulation Results
+            <span title="Shows if the input is accepted by the DFA">[?]</span>
+          </h2>
+          <div id="acceptance-status"></div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-box">
+            <h3>
+              DFA Statistics
+              <span title="Basic info about the generated DFA">[?]</span>
+            </h3>
+            <ul id="stats-list"></ul>
+          </div>
+
+          <div class="stat-box">
+            <h3>
+              Transition Path
+              <span title="The sequence of states and symbols traversed"
+                >[?]</span
+              >
+            </h3>
+            <div id="path-display"></div>
+          </div>
+        </div>
+
+        <div class="mapping-toggle">
+          <button id="toggle-mapping">Show State Mapping</button>
+        </div>
+
+        <div
+          id="mapping-table-container"
+          style="display: none; margin-bottom: 1rem"
+        ></div>
+
+        <div class="visualization">
+          <div
+            id="input-string-visual"
+            style="font-size: 1.2rem; margin-bottom: 0.5rem"
+          ></div>
+          <h3>
+            DFA Animation
+            <span title="Watch the DFA process your input step by step"
+              >[?]</span
+            >
+          </h3>
+          <div style="margin-bottom: 0.5rem; color: #888">
+            The animation plays automatically.
+          </div>
+          <div id="dfa-frame-container">
+            <img id="dfa-frame-img" alt="DFA animation frame" />
+          </div>
+          <div style="margin-top: 0.5rem">
+            <button id="play-again-btn" style="display: none">
+              Play Again
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="error-message" class="error" style="display: none"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>
