@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, send_from_directory
 import os
 from logic.simulate_dfa import DFASimulator
+import shutil
 
 app = Flask(__name__)
 
@@ -60,4 +61,4 @@ def simulate():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True) 
+    app.run(debug=True)

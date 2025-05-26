@@ -5,6 +5,9 @@ services:
     buildCommand: |
       apt-get update && apt-get install -y graphviz
       pip install -r requirements.txt
-    startCommand: |
-      export PATH="/usr/bin:$PATH"
-      gunicorn main:app
+    startCommand: gunicorn main:app
+    envVars:
+      - key: PATH
+        value: /usr/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      - key: GRAPHVIZ_DOT
+        value: /usr/bin/dot
