@@ -20,8 +20,8 @@ This project provides a powerful and user-friendly interface for working with au
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/automata_system.git
-   cd automata_system
+   git clone https://github.com/kavirtudez/dfa-regex-simulator
+   cd dfa-regex-simulator
    ```
 
 2. **Install dependencies:**
@@ -42,7 +42,7 @@ Start the application with:
 python main.py
 ```
 
-Then open your browser and go to [http://localhost:5000](http://localhost:5000) to use the system!
+Then open your browser and go to [http://127.0.0.1:5000/](http://127.0.0.1:5000/) to use the system!
 
 
 
