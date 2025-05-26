@@ -1,3 +1,4 @@
+
 # 🤖 Automata System
 
 ![System View](image.png)
@@ -21,7 +22,8 @@ This project provides a powerful and user-friendly interface for working with au
    ```bash
    git clone https://github.com/yourusername/automata_system.git
    cd automata_system
-   
+   ```
+
 2. **Install dependencies:**
    ```bash
    pip install automata-lib blinker cached_method click colorama Flask frozendict graphviz itsdangerous Jinja2 MarkupSafe networkx numpy pillow pydot pyformlang pyparsing termcolor typing_extensions Werkzeug
@@ -37,10 +39,11 @@ This project provides a powerful and user-friendly interface for working with au
 Start the application with:
 
 ```bash
-python app.py
+python main.py
 ```
 
 Then open your browser and go to [http://localhost:5000](http://localhost:5000) to use the system!
+
 
 
 ## 🤝 Contributing
